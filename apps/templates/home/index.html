@@ -1,0 +1,61 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Dashboard {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card card-chart">
+          <div class="card-header ">
+            <div class="row">
+              <div class="col-sm-6 text-left">
+                <h5 class="card-category">Openstack</h5>
+                <h2 class="card-title">Red-1 : 192.168.1.50</h2>
+              </div>
+              </div>
+            </div>
+          </div>
+      </div>
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+        <div class="card card-tasks">
+          <div class="card-header ">
+            <h6 class="title d-inline">Processing</h6>
+          </div>
+          <div class="card-body ">
+            <div class="table-full-width table-responsive">
+              <pre id="logs"></pre>
+              <script>
+              let ws = new WebSocket('ws://localhost:8765/opt/stack/devstack/red-1-ping.cap?tail=1')
+              ws.onmessage = (event) => {
+                if (event.data === 'ping') {
+                  ws.send('pong')
+                  return
+                }
+                document.getElementById('logs').innerHTML += event.data
+              }
+              </script>
+              
+            </div>
+          </div>
+        </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      demo.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}
